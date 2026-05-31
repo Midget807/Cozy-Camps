@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "cozycamps",
+	"version": "${version}",
+	"name": "Cozy Camps",
+	"description": "Campsite shenanigans",
+	"authors": [
+		"Midget807"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/cozycamps/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          	"net.midget807.cozycamps.CozyCampsMain"
+		],
+		"client": [
+			"net.midget807.cozycamps.CozyCampClient"
+		],
+		"fabric-datagen": [
+			"net.midget807.cozycamps.CozyCampsDataGenerator"
+		]
+	},
+	"mixins": [
+		"cozycamps.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.2",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
