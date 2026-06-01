@@ -3,10 +3,7 @@ package net.midget807.cozycamps.block;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import net.midget807.cozycamps.registry.ModProperties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.Waterloggable;
+import net.minecraft.block.*;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -17,6 +14,7 @@ import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
@@ -33,25 +31,25 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class StumpBlock extends SittableBlock implements Waterloggable {
-    public static final MapCodec<StumpBlock> CODEC = createCodec(StumpBlock::new);
-    public static final EnumProperty<StumpType.Size> SIZE = ModProperties.STUMP_SIZE;
-    public static final EnumProperty<StumpType.Height> HEIGHT = ModProperties.STUMP_HEIGHT;
+public class LogBenchBlock extends SittableBlock implements Waterloggable {
+    public static final MapCodec<LogBenchBlock> CODEC = createCodec(LogBenchBlock::new);
+    public static final VoxelShape CENTER_NS = Block.createCuboidShape(0.0D, 0.0D, 5.0D, 16.0D, 6.0D, 11.0D);
+    public static final VoxelShape CENTER_WE = Block.createCuboidShape(5.0D, 0.0D, 0.0D, 11.0D, 6.0D, 16.0D);
+    public static final VoxelShape NORTH = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 6.0D);
+    public static final VoxelShape SOUTH = Block.createCuboidShape(0.0D, 0.0D, 10.0D, 16.0D, 6.0D, 16.0D);
+    public static final VoxelShape WEST = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 6.0D, 6.0D, 16.0D);
+    public static final VoxelShape EAST = Block.createCuboidShape(10.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D);
+    public static final EnumProperty<LogBenchType.Offset> TYPE = ModProperties.LOG_BENCH_OFFSET;
+    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
-    public static final VoxelShape SMALL_SHORT = Block.createCuboidShape(4.0, 0.0, 4.0, 12.0, 4.0, 12.0);
-    public static final VoxelShape SMALL_TALL = Block.createCuboidShape(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
-    public static final VoxelShape MEDIUM_SHORT = Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 4.0, 14.0);
-    public static final VoxelShape MEDIUM_TALL = Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
-    public static final VoxelShape LARGE_SHORT = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 4.0, 16.0);
-    public static final VoxelShape LARGE_TALL = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
 
     private final ImmutableMap<BlockState, VoxelShape> shapes;
 
-    public StumpBlock(Settings settings) {
+    public LogBenchBlock(Settings settings) {
         super(settings);
         this.shapes = getStateToShape(this.getStateManager());
-        this.setDefaultState(this.getDefaultState().with(SIZE, StumpType.Size.LARGE).with(HEIGHT, StumpType.Height.TALL).with(WATERLOGGED, false));
-        this.setYOffsetVoxel(8.0f);
+        this.setDefaultState(this.getDefaultState().with(TYPE, LogBenchType.Offset.CENTER).with(FACING, Direction.NORTH).with(WATERLOGGED, false));
+        this.setYOffsetVoxel(6.0f);
     }
 
     @Override
@@ -63,69 +61,91 @@ public class StumpBlock extends SittableBlock implements Waterloggable {
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return shapes.get(state);
     }
-
     private static ImmutableMap<BlockState, VoxelShape> getStateToShape(StateManager<Block, BlockState> stateManager) {
         Map<BlockState, VoxelShape> map = stateManager.getStates().stream()
-                .collect(Collectors.toMap(Function.identity(), StumpBlock::getStateForShape));
+                .collect(Collectors.toMap(Function.identity(), LogBenchBlock::getStateForShape));
         return ImmutableMap.copyOf(map);
     }
 
     private static VoxelShape getStateForShape(BlockState state) {
-        StumpType.Size size = (StumpType.Size)state.get(SIZE);
-        StumpType.Height height = (StumpType.Height)state.get(HEIGHT);
-        switch (size) {
-            case SMALL:
-                if (height == StumpType.Height.SHORT) {
-                    return SMALL_SHORT;
-                } else {
-                    return SMALL_TALL;
-                }
-            case MEDIUM:
-                if (height == StumpType.Height.SHORT) {
-                    return MEDIUM_SHORT;
-                } else {
-                    return MEDIUM_TALL;
-                }
-            case LARGE:
-                if (height == StumpType.Height.SHORT) {
-                    return LARGE_SHORT;
-                } else {
-                    return LARGE_TALL;
-                }
-            default:
-                return LARGE_TALL;
+        Direction facing = (Direction) state.get(FACING);
+        LogBenchType.Offset type = (LogBenchType.Offset) state.get(TYPE);
+        if (type == LogBenchType.Offset.CENTER) {
+            return switch (facing) {
+                case NORTH, SOUTH -> CENTER_NS;
+                case WEST, EAST -> CENTER_WE;
+                default -> CENTER_NS;
+            };
+        } else {
+            return switch (facing) {
+                case NORTH -> NORTH;
+                case SOUTH -> SOUTH;
+                case EAST -> EAST;
+                case WEST -> WEST;
+                default -> NORTH;
+            };
         }
     }
+
 
     @Override
     public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
         FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
         boolean isWaterSource = fluidState.isIn(FluidTags.WATER) && fluidState.getLevel() == 8;
         BlockState blockState = this.getDefaultState().with(WATERLOGGED, isWaterSource);
+        blockState = blockState.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
         return blockState;
+    }
+
+    @Override
+    public void updateYOffset(BlockState state) {
+        this.setYOffsetVoxel(6.0);
+    }
+
+    @Override
+    public void updateZOffset(BlockState state) {
+        if (state.get(TYPE) == LogBenchType.Offset.CENTER) {
+            this.setZOffsetVoxel(0.0);
+        } else {
+            switch (state.get(FACING)) {
+                case NORTH:
+                    this.setZOffsetVoxel(-5.0);
+                    break;
+                case SOUTH:
+                    this.setZOffsetVoxel(5.0);
+                    break;
+                default:
+                    this.setZOffsetVoxel(0.0);
+            }
+        }
+    }
+
+    @Override
+    public void updateXOffset(BlockState state) {
+        if (state.get(TYPE) == LogBenchType.Offset.CENTER) {
+            this.setXOffsetVoxel(0.0);
+        } else {
+            switch (state.get(FACING)) {
+                case WEST:
+                    this.setXOffsetVoxel(-5.0);
+                    break;
+                case EAST:
+                    this.setXOffsetVoxel(5.0);
+                    break;
+                default:
+                    this.setXOffsetVoxel(0.0);
+            }
+        }
     }
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient() && player.isSneaking() && player.getMainHandStack().isIn(ItemTags.AXES)) {
-            if (hit.getSide() == Direction.UP || hit.getSide() == Direction.DOWN) {
-                world.setBlockState(pos, state.cycle(HEIGHT));
-            } else {
-                world.setBlockState(pos, state.cycle(SIZE));
-            }
+            world.setBlockState(pos, state.cycle(TYPE));
             this.updateSitOffset(state);
             return ActionResult.SUCCESS;
         }
         return super.onUse(state, world, pos, player, hit);
-    }
-
-    @Override
-    public void updateYOffset(BlockState state) {
-        if (state.get(HEIGHT) == StumpType.Height.SHORT) {
-            this.setYOffsetVoxel(4.0);
-        } else if (state.get(HEIGHT) == StumpType.Height.TALL) {
-            this.setYOffsetVoxel(8.0);
-        }
     }
 
     @Override
@@ -156,7 +176,7 @@ public class StumpBlock extends SittableBlock implements Waterloggable {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(SIZE, HEIGHT, WATERLOGGED);
+        builder.add(TYPE, FACING, WATERLOGGED);
     }
 
     @Override

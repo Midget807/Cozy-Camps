@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,log_bench_offset=center": {
+      "model": "cozycamps:block/spruce_log_bench",
+      "y": 90
+    },
+    "facing=east,log_bench_offset=edge": {
+      "model": "cozycamps:block/spruce_log_bench_edge",
+      "y": 90
+    },
+    "facing=north,log_bench_offset=center": {
+      "model": "cozycamps:block/spruce_log_bench"
+    },
+    "facing=north,log_bench_offset=edge": {
+      "model": "cozycamps:block/spruce_log_bench_edge"
+    },
+    "facing=south,log_bench_offset=center": {
+      "model": "cozycamps:block/spruce_log_bench",
+      "y": 180
+    },
+    "facing=south,log_bench_offset=edge": {
+      "model": "cozycamps:block/spruce_log_bench_edge",
+      "y": 180
+    },
+    "facing=west,log_bench_offset=center": {
+      "model": "cozycamps:block/spruce_log_bench",
+      "y": 270
+    },
+    "facing=west,log_bench_offset=edge": {
+      "model": "cozycamps:block/spruce_log_bench_edge",
+      "y": 270
+    }
+  }
+}

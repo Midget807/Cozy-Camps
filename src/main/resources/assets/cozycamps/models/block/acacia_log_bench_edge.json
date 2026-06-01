@@ -1,0 +1,25 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "cozycamps:block/acacia_log_bench_top",
+		"1": "block/acacia_log",
+		"particle": "cozycamps:block/acacia_log_bench_top"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 6, 6],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 1]},
+			"faces": {
+				"north": {"uv": [5, 0, 11, 16], "rotation": 90, "texture": "#1"},
+				"east": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"south": {"uv": [5, 0, 11, 16], "rotation": 90, "texture": "#1"},
+				"west": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"up": {"uv": [5, 0, 11, 16], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [5, 0, 11, 16], "rotation": 90, "texture": "#1"}
+			}
+		}
+	],
+	"display": {}
+}
