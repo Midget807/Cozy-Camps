@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "stump_height=short,stump_size=large": {
+      "model": "cozycamps:block/large_short_spruce_stump"
+    },
+    "stump_height=short,stump_size=medium": {
+      "model": "cozycamps:block/medium_short_spruce_stump"
+    },
+    "stump_height=short,stump_size=small": {
+      "model": "cozycamps:block/small_short_spruce_stump"
+    },
+    "stump_height=tall,stump_size=large": {
+      "model": "cozycamps:block/large_tall_spruce_stump"
+    },
+    "stump_height=tall,stump_size=medium": {
+      "model": "cozycamps:block/medium_tall_spruce_stump"
+    },
+    "stump_height=tall,stump_size=small": {
+      "model": "cozycamps:block/small_tall_spruce_stump"
+    }
+  }
+}

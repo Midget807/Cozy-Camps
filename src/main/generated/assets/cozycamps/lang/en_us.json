@@ -1,1 +1,11 @@
-{}
+{
+  "block.cozycamps.acacia_stump": "Acacia Stump ",
+  "block.cozycamps.birch_stump": "Birch Stump ",
+  "block.cozycamps.cherry_stump": "Cherry Stump ",
+  "block.cozycamps.dark_oak_stump": "Dark Oak Stump ",
+  "block.cozycamps.jungle_stump": "Jungle Stump ",
+  "block.cozycamps.mangrove_stump": "Mangrove Stump ",
+  "block.cozycamps.oak_stump": "Oak Stump ",
+  "block.cozycamps.spruce_stump": "Spruce Stump ",
+  "itemGroup.cozycamps.main": "Cozy Camps"
+}

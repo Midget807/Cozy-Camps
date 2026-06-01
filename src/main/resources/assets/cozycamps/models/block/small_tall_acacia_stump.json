@@ -1,0 +1,23 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "cozycamps:block/small_acacia_stump_top",
+		"1": "block/acacia_log",
+		"particle": "block/acacia_log"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 4],
+			"to": [12, 8, 12],
+			"faces": {
+				"north": {"uv": [4, 8, 12, 16], "texture": "#1"},
+				"east": {"uv": [4, 8, 12, 16], "texture": "#1"},
+				"south": {"uv": [4, 8, 12, 16], "texture": "#1"},
+				"west": {"uv": [4, 8, 12, 16], "texture": "#1"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#0"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#0"}
+			}
+		}
+	]
+}

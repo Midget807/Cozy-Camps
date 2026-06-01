@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 
 import net.midget807.cozycamps.registry.ModBlocks;
 import net.midget807.cozycamps.registry.ModEntities;
+import net.midget807.cozycamps.registry.ModItemGroups;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ public class CozyCampsMain implements ModInitializer {
 		LOGGER.info("Camping time");
 
 		ModBlocks.registerModBlocks();
+		ModItemGroups.registerModItemGroups();
 		ModEntities.registerModEntities();
 	}
 }

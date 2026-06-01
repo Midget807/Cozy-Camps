@@ -1,3 +1,17 @@
-// 1.21.1	2026-06-01T03:14:10.1805042	Cozy Camps/Model Definitions
-91554217b4879228cbe83186e9778824da5685a9 assets\cozycamps\models\item\oak_stump.json
+// 1.21.1	2026-06-01T12:31:43.4975276	Cozy Camps/Model Definitions
+a3b844440045ba6f03345850f60161d2a870b62d assets\cozycamps\blockstates\cherry_stump.json
+663c4f5ecbcac34c94c0d17350e287e58548d0c7 assets\cozycamps\models\item\mangrove_stump.json
+633e4f0a42098c1ab96d7a3cefd39aa94eec0388 assets\cozycamps\models\item\jungle_stump.json
+efbfa48d05564c7b3d3d14def4e2424b33e05544 assets\cozycamps\models\item\birch_stump.json
+906c98c127e5998473ce9c0ef6056b3db693ff02 assets\cozycamps\blockstates\acacia_stump.json
+4570605e37b70292fdb8d8e28a70951f06e1690c assets\cozycamps\blockstates\jungle_stump.json
 b716f1e9e3cbadab83978c91c09427b13822cfc3 assets\cozycamps\blockstates\oak_stump.json
+aceeeab71592bc3fbe3d273eabf92bba22e4f87f assets\cozycamps\models\item\cherry_stump.json
+9fb474bc149836cb0aab8c2ef88162e24e3cbe53 assets\cozycamps\blockstates\mangrove_stump.json
+9f0fb94ff7d9404605d3a7ebdc059c1e4466265b assets\cozycamps\blockstates\birch_stump.json
+2ae3e08d158f3555d1c0f6a4b299f85a91392f54 assets\cozycamps\models\item\spruce_stump.json
+0ac69f016c802c8ea29371d725bef700acfa7e76 assets\cozycamps\models\item\dark_oak_stump.json
+fffcc8b9689c108f9715cf1c59c3a31d7d379418 assets\cozycamps\models\item\acacia_stump.json
+24274487d1fa4c844803e749a65a1e7883ea1383 assets\cozycamps\blockstates\spruce_stump.json
+0f90aba4db0e0de9b5a55acb51d256c6ef001d35 assets\cozycamps\blockstates\dark_oak_stump.json
+91554217b4879228cbe83186e9778824da5685a9 assets\cozycamps\models\item\oak_stump.json

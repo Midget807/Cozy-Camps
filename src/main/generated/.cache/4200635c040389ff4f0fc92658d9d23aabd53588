@@ -1,3 +1,5 @@
-// 1.21.1	2026-06-01T03:14:10.1815037	Cozy Camps/Tags for minecraft:block
-0b285b5ab40bbff848eef6c5e9cc182f98739852 data\minecraft\tags\block\mineable\axe.json
-0b285b5ab40bbff848eef6c5e9cc182f98739852 data\cozycamps\tags\block\sneak_interactable.json
+// 1.21.1	2026-06-01T12:31:43.5010379	Cozy Camps/Tags for minecraft:block
+25762ac77fc3506fc58d5dda10e5b8ef0e91204d data\cozycamps\tags\block\stumps.json
+5a2ec67c4d9d62485e4c4dacdc0df0160c91c2f3 data\minecraft\tags\block\mineable\axe.json
+5a2ec67c4d9d62485e4c4dacdc0df0160c91c2f3 data\cozycamps\tags\block\sittable.json
+6886f268f0416e02ea2d0c148ed8a40248dc2372 data\cozycamps\tags\block\sneak_interactable.json

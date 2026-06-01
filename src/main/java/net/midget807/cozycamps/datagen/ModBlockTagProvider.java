@@ -16,6 +16,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
     public static final TagKey<Block> SNEAK_INTERACTABLE = TagKey.of(RegistryKeys.BLOCK, CozyCampsMain.id("sneak_interactable"));
+    public static final TagKey<Block> SITTABLE = TagKey.of(RegistryKeys.BLOCK, CozyCampsMain.id("sittable"));
+    public static final TagKey<Block> STUMPS = TagKey.of(RegistryKeys.BLOCK, CozyCampsMain.id("stumps"));
 
     public ModBlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
@@ -23,13 +25,22 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup lookup) {
-        this.getOrCreateTagBuilder(SNEAK_INTERACTABLE)
+        this.getOrCreateTagBuilder(STUMPS)
                 .add(
-                        ModBlocks.OAK_STUMP
+                        ModBlocks.OAK_STUMP,
+                        ModBlocks.SPRUCE_STUMP,
+                        ModBlocks.BIRCH_STUMP,
+                        ModBlocks.JUNGLE_STUMP,
+                        ModBlocks.ACACIA_STUMP,
+                        ModBlocks.CHERRY_STUMP,
+                        ModBlocks.DARK_OAK_STUMP,
+                        ModBlocks.MANGROVE_STUMP
                 );
+        this.getOrCreateTagBuilder(SITTABLE)
+                .addTag(STUMPS);
         this.getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
-                .add(
-                        ModBlocks.OAK_STUMP
-                );
+                .addTag(STUMPS);
+        this.getOrCreateTagBuilder(SNEAK_INTERACTABLE)
+                .addTag(SITTABLE);
     }
 }

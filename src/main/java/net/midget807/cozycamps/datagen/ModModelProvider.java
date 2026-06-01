@@ -24,6 +24,13 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         this.registerStump(ModBlocks.OAK_STUMP, "oak", blockStateModelGenerator);
+        this.registerStump(ModBlocks.SPRUCE_STUMP, "spruce", blockStateModelGenerator);
+        this.registerStump(ModBlocks.BIRCH_STUMP, "birch", blockStateModelGenerator);
+        this.registerStump(ModBlocks.JUNGLE_STUMP, "jungle", blockStateModelGenerator);
+        this.registerStump(ModBlocks.ACACIA_STUMP, "acacia", blockStateModelGenerator);
+        this.registerStump(ModBlocks.CHERRY_STUMP, "cherry", blockStateModelGenerator);
+        this.registerStump(ModBlocks.DARK_OAK_STUMP, "dark_oak", blockStateModelGenerator);
+        this.registerStump(ModBlocks.MANGROVE_STUMP, "mangrove", blockStateModelGenerator);
     }
 
     private void registerStump(Block block, String woodType, BlockStateModelGenerator blockStateModelGenerator) {
