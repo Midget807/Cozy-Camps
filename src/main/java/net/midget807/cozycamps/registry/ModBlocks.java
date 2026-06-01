@@ -2,11 +2,14 @@ package net.midget807.cozycamps.registry;
 
 import net.midget807.cozycamps.CozyCampsMain;
 import net.midget807.cozycamps.block.LogBenchBlock;
+import net.midget807.cozycamps.block.SackBlock;
 import net.midget807.cozycamps.block.SittableBlock;
 import net.midget807.cozycamps.block.StumpBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -20,6 +23,8 @@ import java.util.Map;
 
 public class ModBlocks {
     public static final Map<Identifier, Block> BLOCKS_WITH_ITEM = new LinkedHashMap<>();
+
+    public static final Block SACK = registerBlock("sack", new SackBlock(AbstractBlock.Settings.create().mapColor(MapColor.BROWN).strength(0.5F).sounds(BlockSoundGroup.WOOL).burnable()));
 
     public static final Block OAK_STUMP = register("oak_stump", new StumpBlock(createStumpBlockSettings()));
     public static final Block SPRUCE_STUMP = register("spruce_stump", new StumpBlock(createStumpBlockSettings()));
