@@ -22,6 +22,7 @@ public class ModLangProvider extends FabricLanguageProvider {
     public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
         this.addItemGroup(translationBuilder, ModItemGroups.MAIN, "Cozy Camps");
         ModBlocks.BLOCKS_WITH_ITEM.forEach((identifier, block) -> addFromIdName(translationBuilder, block));
+        translationBuilder.add("container.cozycamps.sack", "Sack");
     }
 
     private void addItemGroup(TranslationBuilder translationBuilder, ItemGroup itemGroup, String name) {

@@ -17,6 +17,9 @@ public class ModItemGroups {
                         ModBlocks.BLOCKS_WITH_ITEM.forEach((identifier, block) -> {
                             entries.add(block);
                         });
+                        ModItems.ITEMS.forEach((identifier, item) -> {
+                            entries.add(item);
+                        });
                     })
                     .build()
     );

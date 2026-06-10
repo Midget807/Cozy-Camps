@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -24,7 +25,23 @@ import java.util.Map;
 public class ModBlocks {
     public static final Map<Identifier, Block> BLOCKS_WITH_ITEM = new LinkedHashMap<>();
 
-    public static final Block SACK = registerBlock("sack", new SackBlock(AbstractBlock.Settings.create().mapColor(MapColor.BROWN).strength(0.5F).sounds(BlockSoundGroup.WOOL).burnable()));
+    public static final Block SACK = registerBlock("sack", new SackBlock(null, createSackBlockSettings(DyeColor.YELLOW)));
+    public static final Block WHITE_SACK = registerBlock("white_sack", new SackBlock(DyeColor.WHITE, createSackBlockSettings(DyeColor.WHITE)));
+    public static final Block ORANGE_SACK = registerBlock("orange_sack", new SackBlock(DyeColor.ORANGE, createSackBlockSettings(DyeColor.ORANGE)));
+    public static final Block MAGENTA_SACK = registerBlock("magenta_sack", new SackBlock(DyeColor.MAGENTA, createSackBlockSettings(DyeColor.MAGENTA)));
+    public static final Block LIGHT_BLUE_SACK = registerBlock("light_blue_sack", new SackBlock(DyeColor.LIGHT_BLUE, createSackBlockSettings(DyeColor.LIGHT_BLUE)));
+    public static final Block YELLOW_SACK = registerBlock("yellow_sack", new SackBlock(DyeColor.YELLOW, createSackBlockSettings(DyeColor.YELLOW)));
+    public static final Block LIME_SACK = registerBlock("lime_sack", new SackBlock(DyeColor.LIME, createSackBlockSettings(DyeColor.LIME)));
+    public static final Block PINK_SACK = registerBlock("pink_sack", new SackBlock(DyeColor.PINK, createSackBlockSettings(DyeColor.PINK)));
+    public static final Block GRAY_SACK = registerBlock("gray_sack", new SackBlock(DyeColor.GRAY, createSackBlockSettings(DyeColor.GRAY)));
+    public static final Block LIGHT_GRAY_SACK = registerBlock("light_gray_sack", new SackBlock(DyeColor.LIGHT_GRAY, createSackBlockSettings(DyeColor.LIGHT_GRAY)));
+    public static final Block CYAN_SACK = registerBlock("cyan_sack", new SackBlock(DyeColor.CYAN, createSackBlockSettings(DyeColor.CYAN)));
+    public static final Block BLUE_SACK = registerBlock("blue_sack", new SackBlock(DyeColor.BLUE, createSackBlockSettings(DyeColor.BLUE)));
+    public static final Block BROWN_SACK = registerBlock("brown_sack", new SackBlock(DyeColor.BROWN, createSackBlockSettings(DyeColor.BROWN)));
+    public static final Block GREEN_SACK = registerBlock("green_sack", new SackBlock(DyeColor.GREEN, createSackBlockSettings(DyeColor.GREEN)));
+    public static final Block RED_SACK = registerBlock("red_sack", new SackBlock(DyeColor.RED, createSackBlockSettings(DyeColor.RED)));
+    public static final Block BLACK_SACK = registerBlock("black_sack", new SackBlock(DyeColor.BLACK, createSackBlockSettings(DyeColor.BLACK)));
+    public static final Block PURPLE_SACK = registerBlock("purple_sack", new SackBlock(DyeColor.PURPLE, createSackBlockSettings(DyeColor.PURPLE)));
 
     public static final Block OAK_STUMP = register("oak_stump", new StumpBlock(createStumpBlockSettings()));
     public static final Block SPRUCE_STUMP = register("spruce_stump", new StumpBlock(createStumpBlockSettings()));
@@ -60,7 +77,11 @@ public class ModBlocks {
     }
 
     public static AbstractBlock.Settings createStumpBlockSettings() {
-        return AbstractBlock.Settings.create().mapColor(MapColor.SPRUCE_BROWN).strength(1.5f).sounds(BlockSoundGroup.WOOD).burnable().nonOpaque();
+        return AbstractBlock.Settings.create().nonOpaque().mapColor(MapColor.SPRUCE_BROWN).strength(1.5f).sounds(BlockSoundGroup.WOOD).burnable().nonOpaque();
+    }
+
+    public static AbstractBlock.Settings createSackBlockSettings(DyeColor color) {
+        return AbstractBlock.Settings.create().nonOpaque().mapColor(color).strength(0.5F).sounds(BlockSoundGroup.WOOL).burnable();
     }
 
     public static void registerModBlocks() {
