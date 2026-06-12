@@ -30,7 +30,7 @@ import java.util.stream.IntStream;
 
 public class SackBlockEntity extends LootableContainerBlockEntity implements SidedInventory {
     public static final int INVENTORY_SIZE = 9;
-    private final int[] AVAILABLE_SLOTS = IntStream.range(0, INVENTORY_SIZE).toArray();
+    public final int[] AVAILABLE_SLOTS = IntStream.range(0, INVENTORY_SIZE).toArray();
     private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
     private int viewerCount;
     @Nullable

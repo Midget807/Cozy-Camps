@@ -15,6 +15,11 @@ public class SingleItemSlot extends Slot {
     }
 
     @Override
+    public int getMaxItemCount(ItemStack stack) {
+        return 1;
+    }
+
+    @Override
     public int getMaxItemCount() {
         return 1;
     }

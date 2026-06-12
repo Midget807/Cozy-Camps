@@ -1,5 +1,8 @@
 package net.midget807.cozycamps.screen;
 
+import net.midget807.cozycamps.item.component.SackInventoryComponent;
+import net.midget807.cozycamps.registry.ModDataComponents;
+import net.midget807.cozycamps.registry.ModItems;
 import net.midget807.cozycamps.registry.ModScreenHandlers;
 import net.midget807.cozycamps.screen.slot.SingleItemSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,6 +11,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.ShulkerBoxSlot;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.collection.DefaultedList;
 
@@ -26,9 +30,9 @@ public class SackScreenHandler extends ScreenHandler {
         this.player = playerInventory.player;
         this.inventory = inventory;
 
-        for (int i = 0; i < 3; ++i) {
-            for (int l = 0; l < 3; ++l) {
-                this.addSlot(new SingleItemSlot(this.inventory, l + i * 9 + 9, 26 + l * 18, 78 + i * 18));
+        for (int k = 0; k < 3; k++) {
+            for (int l = 0; l < 3; l++) {
+                this.addSlot(new SingleItemSlot(inventory, l + k * 3, 8 + l * 18 + (18 * 3), 18 + k * 18));
             }
         }
         addPlayerInventory(playerInventory);
@@ -36,16 +40,16 @@ public class SackScreenHandler extends ScreenHandler {
     }
 
     public void addPlayerInventory(PlayerInventory playerInventory) {
-        for (int i = 0; i < 3; ++i) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 26 + l * 18, 140 + i * 18));
+        for (int k = 0; k < 3; k++) {
+            for (int l = 0; l < 9; l++) {
+                this.addSlot(new Slot(playerInventory, l + k * 9 + 9, 8 + l * 18, 84 + k * 18));
             }
         }
     }
 
     public void addPlayerHotbar(PlayerInventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 26 + i * 18, 198));
+        for (int k = 0; k < 9; k++) {
+            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 142));
         }
     }
 
@@ -84,5 +88,13 @@ public class SackScreenHandler extends ScreenHandler {
     public void onClosed(PlayerEntity player) {
         super.onClosed(player);
         this.inventory.onClose(player);
+        ItemStack itemStack = player.getStackInHand(player.getActiveHand());
+        if (itemStack.isOf(ModItems.SACK)) {
+            DefaultedList<ItemStack> stacks = DefaultedList.ofSize(9, ItemStack.EMPTY);
+            for (int i = 0; i < inventory.size(); i++) {
+                stacks.set(i, inventory.getStack(i));
+            }
+            itemStack.set(ModDataComponents.SACK_INVENTORY, SackInventoryComponent.fromStacks(stacks));
+        }
     }
 }

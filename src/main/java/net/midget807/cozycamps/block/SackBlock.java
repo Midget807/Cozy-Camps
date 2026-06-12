@@ -3,8 +3,11 @@ package net.midget807.cozycamps.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.midget807.cozycamps.block.entity.SackBlockEntity;
+import net.midget807.cozycamps.item.SackItem;
+import net.midget807.cozycamps.item.component.SackInventoryComponent;
 import net.midget807.cozycamps.registry.ModBlockEntities;
 import net.midget807.cozycamps.registry.ModBlocks;
+import net.midget807.cozycamps.registry.ModDataComponents;
 import net.midget807.cozycamps.registry.ModStats;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -215,6 +218,13 @@ public class SackBlock extends BlockWithEntity implements BlockEntityProvider {
     }
 
     public static ItemStack getItemStack(@Nullable DyeColor color) {
-        return new ItemStack(get(color));
+        Block block = get(color);
+        Item item = block.asItem();
+        ItemStack itemStack = new ItemStack(block);
+        /*if (item instanceof SackItem sackItem) {
+            itemStack = new ItemStack(sackItem);
+            itemStack.set(ModDataComponents.SACK_INVENTORY, SackInventoryComponent.fromStacks())
+        }*/
+        return itemStack;
     }
 }
