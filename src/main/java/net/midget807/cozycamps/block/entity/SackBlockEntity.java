@@ -6,6 +6,7 @@ import net.midget807.cozycamps.screen.SackScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -127,7 +128,7 @@ public class SackBlockEntity extends LootableContainerBlockEntity implements Sid
     }
 
     @Override
-    protected void setHeldStacks(DefaultedList<ItemStack> inventory) {
+    public void setHeldStacks(DefaultedList<ItemStack> inventory) {
         this.inventory = inventory;
     }
 

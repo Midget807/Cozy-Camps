@@ -22,7 +22,7 @@ public class SackInventoryComponent {
             .collect(PacketCodecs.toList(9))
             .xmap(SackInventoryComponent::new, component -> component.inventory);
     public static final SackInventoryComponent DEFAULT = new SackInventoryComponent(DefaultedList.ofSize(SackItem.INVENTORY_SIZE, ItemStack.EMPTY));
-    public final DefaultedList<ItemStack> inventory;
+    private final DefaultedList<ItemStack> inventory;
 
     public SackInventoryComponent(DefaultedList<ItemStack> inventory) {
         this.inventory = inventory;

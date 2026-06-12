@@ -5,10 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.midget807.cozycamps.block.entity.SackBlockEntity;
 import net.midget807.cozycamps.item.SackItem;
 import net.midget807.cozycamps.item.component.SackInventoryComponent;
-import net.midget807.cozycamps.registry.ModBlockEntities;
-import net.midget807.cozycamps.registry.ModBlocks;
-import net.midget807.cozycamps.registry.ModDataComponents;
-import net.midget807.cozycamps.registry.ModStats;
+import net.midget807.cozycamps.registry.*;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -61,7 +58,34 @@ public class SackBlock extends BlockWithEntity implements BlockEntityProvider {
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new SackBlockEntity(this.color, pos, state);
+        SackBlockEntity sackBlockEntity = new SackBlockEntity(this.color, pos, state);
+        return sackBlockEntity;
+    }
+
+    @Override
+    public Item asItem() {
+        if (this.color == null) {
+            return ModItems.SACK;
+        } else {
+            return switch (color) {
+                case WHITE -> ModItems.WHITE_SACK;
+                case ORANGE -> ModItems.ORANGE_SACK;
+                case MAGENTA -> ModItems.MAGENTA_SACK;
+                case LIGHT_BLUE -> ModItems.LIGHT_BLUE_SACK;
+                case YELLOW -> ModItems.YELLOW_SACK;
+                case LIME -> ModItems.LIME_SACK;
+                case PINK -> ModItems.PINK_SACK;
+                case GRAY -> ModItems.GRAY_SACK;
+                case LIGHT_GRAY -> ModItems.LIGHT_GRAY_SACK;
+                case CYAN -> ModItems.CYAN_SACK;
+                case BLUE -> ModItems.BLUE_SACK;
+                case BROWN -> ModItems.BROWN_SACK;
+                case GREEN -> ModItems.GREEN_SACK;
+                case RED -> ModItems.RED_SACK;
+                case BLACK -> ModItems.BLACK_SACK;
+                case PURPLE -> ModItems.PURPLE_SACK;
+            };
+        }
     }
 
     @Override
