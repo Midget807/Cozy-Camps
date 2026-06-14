@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-14T17:34:30.0626084	Cozy Camps/Block Loot Tables
+// 1.21.1	2026-06-14T19:05:37.7768168	Cozy Camps/Block Loot Tables
 0776b5fa27c0ff5957b5106d0d203f3546cd82ed data\cozycamps\loot_table\blocks\spruce_stump.json
 47f44801227822371ec689b8396fe403f23f6df4 data\cozycamps\loot_table\blocks\dark_oak_stump.json
 f1b69c7651af0ff334683f6c3af0e59fb03242d1 data\cozycamps\loot_table\blocks\mangrove_log_bench.json
@@ -10,6 +10,7 @@ c45daefd4c2b9d6c5636ab13b7fe48bea21ab672 data\cozycamps\loot_table\blocks\birch_
 a93951f5fc23ff18b8ce779a82701340f3500a22 data\cozycamps\loot_table\blocks\cherry_stump.json
 fa9cfe73a91c4a34cfebb10515631e742d6bb047 data\cozycamps\loot_table\blocks\birch_stump.json
 488da10a41e27dc41d4e50624f1a1349f1c23bf2 data\cozycamps\loot_table\blocks\jungle_stump.json
+7931a70d30ae6483447b8f153c79edc47300e653 data\cozycamps\loot_table\blocks\stake.json
 864c2823c0eb8088b532c834eaca7df9cd616e4b data\cozycamps\loot_table\blocks\oak_log_bench.json
 784f0aff4955162679bc78b814b71e8c73ed321a data\cozycamps\loot_table\blocks\cherry_log_bench.json
 93b8235f55fc0feecfe93a245be2a58d4656d0b4 data\cozycamps\loot_table\blocks\jungle_log_bench.json

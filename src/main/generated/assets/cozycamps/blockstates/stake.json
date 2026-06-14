@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "lit=false,part=base": {
+      "model": "cozycamps:block/stake"
+    },
+    "lit=false,part=coal": {
+      "model": "cozycamps:block/stake_torch"
+    },
+    "lit=false,part=point": {
+      "model": "cozycamps:block/pointed_stake"
+    },
+    "lit=false,part=top": {
+      "model": "cozycamps:block/stake"
+    },
+    "lit=true,part=base": {
+      "model": "cozycamps:block/stake"
+    },
+    "lit=true,part=coal": {
+      "model": "cozycamps:block/stake_torch_lit"
+    },
+    "lit=true,part=point": {
+      "model": "cozycamps:block/pointed_stake"
+    },
+    "lit=true,part=top": {
+      "model": "cozycamps:block/stake"
+    }
+  }
+}

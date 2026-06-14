@@ -2,6 +2,7 @@ package net.midget807.cozycamps.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
+import net.midget807.cozycamps.datagen.ModItemTagProvider;
 import net.midget807.cozycamps.registry.ModProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -107,7 +108,7 @@ public class StumpBlock extends SittableBlock implements Waterloggable {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (!world.isClient() && player.isSneaking() && player.getMainHandStack().isIn(ItemTags.AXES)) {
+        if (!world.isClient() && player.isSneaking() && player.getMainHandStack().isIn(ModItemTagProvider.STUMP_SHAPER)) {
             if (hit.getSide() == Direction.UP || hit.getSide() == Direction.DOWN) {
                 world.setBlockState(pos, state.cycle(HEIGHT));
             } else {

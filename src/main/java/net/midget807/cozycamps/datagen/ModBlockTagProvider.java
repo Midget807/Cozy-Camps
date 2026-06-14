@@ -58,11 +58,17 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .addTag(STUMPS)
                 .addTag(LOG_BENCHES);
         this.getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
+                .add(
+                        ModBlocks.STAKE
+                )
                 .addTag(STUMPS)
                 .addTag(LOG_BENCHES)
                 .addTag(BONFIRES)
                 .addTag(CRUCIFIXES);
         this.getOrCreateTagBuilder(SNEAK_INTERACTABLE)
+                .add(
+                        ModBlocks.STAKE
+                )
                 .addTag(BONFIRES)
                 .addTag(CRUCIFIXES)
                 .addTag(SITTABLE);

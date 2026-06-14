@@ -1,0 +1,37 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "cozycamps:block/stake_torch",
+		"particle": "cozycamps:block/stake_torch"
+	},
+	"elements": [
+		{
+			"from": [7, -16, 7],
+			"to": [9, 3, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0, 7]},
+			"faces": {
+				"north": {"uv": [0, 0, 1, 9.5], "texture": "#0"},
+				"east": {"uv": [1, 0, 2, 9.5], "texture": "#0"},
+				"south": {"uv": [2, 0, 3, 9.5], "texture": "#0"},
+				"west": {"uv": [3, 0, 4, 9.5], "texture": "#0"},
+				"up": {"uv": [6.5, 6.5, 5.5, 5.5], "texture": "#0"},
+				"down": {"uv": [6.5, 6.5, 5.5, 7.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6.5, 3, 6.5],
+			"to": [9.5, 8, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 23, 7]},
+			"faces": {
+				"north": {"uv": [4, 0, 5.5, 2.5], "texture": "#0"},
+				"east": {"uv": [4, 2.5, 5.5, 5], "texture": "#0"},
+				"south": {"uv": [4, 5, 5.5, 7.5], "texture": "#0"},
+				"west": {"uv": [5.5, 0, 7, 2.5], "texture": "#0"},
+				"up": {"uv": [7, 4, 5.5, 2.5], "texture": "#0"},
+				"down": {"uv": [7, 4, 5.5, 5.5], "texture": "#0"}
+			}
+		}
+	]
+}

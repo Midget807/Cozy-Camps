@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "cozycamps:block/purple_sack",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cozycamps:block/purple_sack"
+    },
+    "facing=south": {
+      "model": "cozycamps:block/purple_sack",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cozycamps:block/purple_sack",
+      "y": 270
+    }
+  }
+}

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.midget807.cozycamps.CozyCampsMain;
 import net.midget807.cozycamps.block.LogBenchType;
+import net.midget807.cozycamps.block.StakeType;
 import net.midget807.cozycamps.block.StumpType;
 import net.midget807.cozycamps.registry.ModBlocks;
 import net.midget807.cozycamps.registry.ModProperties;
@@ -16,6 +17,7 @@ import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.ModelIds;
 import net.minecraft.data.client.VariantSettings;
 import net.minecraft.data.client.VariantsBlockStateSupplier;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
@@ -26,7 +28,25 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
+        this.registerStake(ModBlocks.STAKE, blockStateModelGenerator);
+
         blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.WHITE_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.ORANGE_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.MAGENTA_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.LIGHT_BLUE_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.YELLOW_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.LIME_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.PINK_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.GRAY_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.LIGHT_GRAY_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.CYAN_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.BLUE_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.BROWN_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.GREEN_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.RED_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.BLACK_SACK);
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.PURPLE_SACK);
 
         this.registerStump(ModBlocks.OAK_STUMP, "oak", blockStateModelGenerator);
         this.registerStump(ModBlocks.SPRUCE_STUMP, "spruce", blockStateModelGenerator);
@@ -45,6 +65,22 @@ public class ModModelProvider extends FabricModelProvider {
         this.registerLogBench(ModBlocks.CHERRY_LOG_BENCH, "cherry", blockStateModelGenerator);
         this.registerLogBench(ModBlocks.DARK_OAK_LOG_BENCH, "dark_oak", blockStateModelGenerator);
         this.registerLogBench(ModBlocks.MANGROVE_LOG_BENCH, "mangrove", blockStateModelGenerator);
+    }
+
+    private void registerStake(Block block, BlockStateModelGenerator blockStateModelGenerator) {
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, ModelIds.getBlockModelId(block)))
+                        .coordinate(BlockStateVariantMap.create(ModProperties.STAKE_PART, Properties.LIT)
+                                .register(StakeType.Part.TOP, false, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake")))
+                                .register(StakeType.Part.POINT, false, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/pointed_stake")))
+                                .register(StakeType.Part.COAL, false, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake_torch")))
+                                .register(StakeType.Part.BASE, false, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake")))
+                                .register(StakeType.Part.TOP, true, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake")))
+                                .register(StakeType.Part.POINT, true, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/pointed_stake")))
+                                .register(StakeType.Part.COAL, true, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake_torch_lit")))
+                                .register(StakeType.Part.BASE, true, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake")))
+                        )
+        );
     }
 
     private void registerStump(Block block, String woodType, BlockStateModelGenerator blockStateModelGenerator) {
