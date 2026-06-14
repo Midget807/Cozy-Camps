@@ -9,22 +9,18 @@ import net.minecraft.util.Identifier;
 
 public class SackScreen extends HandledScreen<SackScreenHandler> {
     public static final Identifier TEXTURE = CozyCampsMain.id("textures/gui/container/sack.png");
-    public static final int BACKGROUND_WIDTH = 212;
-    public static final int BACKGROUND_HEIGHT = 222;
 
     public SackScreen(SackScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        this.backgroundWidth = BACKGROUND_WIDTH;
-        this.backgroundHeight = BACKGROUND_HEIGHT;
-        this.playerInventoryTitleY = this.backgroundHeight - 94;
+        this.backgroundHeight++;
     }
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-        int x = (width - BACKGROUND_WIDTH) / 2;
-        int y = (height - BACKGROUND_HEIGHT) / 2;
+        int i = (this.width - this.backgroundWidth) / 2;
+        int j = (this.height - this.backgroundHeight) / 2;
 
-        context.drawTexture(TEXTURE, x, y, 0, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 256, 256);
+        context.drawTexture(TEXTURE, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
     }
 
     @Override

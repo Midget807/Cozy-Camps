@@ -26,6 +26,8 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.SACK);
+
         this.registerStump(ModBlocks.OAK_STUMP, "oak", blockStateModelGenerator);
         this.registerStump(ModBlocks.SPRUCE_STUMP, "spruce", blockStateModelGenerator);
         this.registerStump(ModBlocks.BIRCH_STUMP, "birch", blockStateModelGenerator);

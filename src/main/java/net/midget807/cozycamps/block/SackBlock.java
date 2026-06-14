@@ -3,51 +3,71 @@ package net.midget807.cozycamps.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.midget807.cozycamps.block.entity.SackBlockEntity;
-import net.midget807.cozycamps.item.SackItem;
-import net.midget807.cozycamps.item.component.SackInventoryComponent;
-import net.midget807.cozycamps.registry.*;
-import net.minecraft.block.*;
+import net.midget807.cozycamps.registry.ModBlockEntities;
+import net.midget807.cozycamps.registry.ModBlocks;
+import net.midget807.cozycamps.registry.ModItems;
+import net.midget807.cozycamps.registry.ModStats;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
-public class SackBlock extends BlockWithEntity implements BlockEntityProvider {
+public class SackBlock extends BlockWithEntity implements BlockEntityProvider, Waterloggable {
     public static final MapCodec<SackBlock> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(DyeColor.CODEC.optionalFieldOf("color").forGetter(block -> Optional.ofNullable(block.color)), createSettingsCodec())
                     .apply(instance, (dyeColor, settings1) -> new SackBlock((DyeColor) dyeColor.orElse(null), settings1))
     );
     public static final Text UNKNOWN_CONTENTS_TEXT = Text.translatable("container.shulkerBox.unknownContents");
     public static final VoxelShape SHAPE = Block.createCuboidShape(5.0, 0.0, 5.0, 11.0, 8.0, 11.0);
+    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+
     @Nullable
     private final DyeColor color;
 
     public SackBlock(@Nullable DyeColor color, Settings settings) {
         super(settings);
+        this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false));
         this.color = color;
     }
 
@@ -155,28 +175,6 @@ public class SackBlock extends BlockWithEntity implements BlockEntityProvider {
         }
     }
 
-    /*@Override
-    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
-        super.appendTooltip(stack, context, tooltip, options);
-        if (stack.contains(DataComponentTypes.CONTAINER_LOOT)) {
-            tooltip.add(UNKNOWN_CONTENTS_TEXT);
-        }
-        int i = 0;
-        int j = 0;
-
-        for (ItemStack itemStack : stack.getOrDefault(DataComponentTypes.CONTAINER, ContainerComponent.DEFAULT).iterateNonEmpty()) {
-            j++;
-            if (i <= 4) {
-                i++;
-                tooltip.add(Text.translatable("container.shulkerBox.itemCount", itemStack.getName(), itemStack.getCount()));
-            }
-        }
-
-        if (j - i > 0) {
-            tooltip.add(Text.translatable("container.shulkerBox.more", j - i).formatted(Formatting.ITALIC));
-        }
-    }
-*/
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return SHAPE;
@@ -250,5 +248,59 @@ public class SackBlock extends BlockWithEntity implements BlockEntityProvider {
             itemStack.set(ModDataComponents.SACK_INVENTORY, SackInventoryComponent.fromStacks())
         }*/
         return itemStack;
+    }
+
+    @Override
+    public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
+        FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        boolean isWaterSource = fluidState.isIn(FluidTags.WATER) && fluidState.getLevel() == 8;
+        BlockState blockState = this.getDefaultState().with(WATERLOGGED, isWaterSource);
+        blockState = blockState.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        return blockState;
+    }
+
+    @Override
+    protected FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public boolean tryFillWithFluid(WorldAccess world, BlockPos pos, BlockState state, FluidState fluidState) {
+        return Waterloggable.super.tryFillWithFluid(world, pos, state, fluidState);
+    }
+
+    @Override
+    public boolean canFillWithFluid(@Nullable PlayerEntity player, BlockView world, BlockPos pos, BlockState state, Fluid fluid) {
+        return Waterloggable.super.canFillWithFluid(player, world, pos, state, fluid);
+    }
+
+    @Override
+    protected BlockState getStateForNeighborUpdate(
+            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos
+    ) {
+        if ((Boolean)state.get(WATERLOGGED)) {
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        }
+
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(FACING, WATERLOGGED);
+    }
+
+    @Override
+    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
+        switch (type) {
+            case LAND:
+                return false;
+            case WATER:
+                return state.getFluidState().isIn(FluidTags.WATER);
+            case AIR:
+                return false;
+            default:
+                return false;
+        }
     }
 }
