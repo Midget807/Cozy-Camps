@@ -155,7 +155,7 @@ public class SackBlock extends BlockWithEntity implements BlockEntityProvider {
         }
     }
 
-    @Override
+    /*@Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
         super.appendTooltip(stack, context, tooltip, options);
         if (stack.contains(DataComponentTypes.CONTAINER_LOOT)) {
@@ -176,7 +176,7 @@ public class SackBlock extends BlockWithEntity implements BlockEntityProvider {
             tooltip.add(Text.translatable("container.shulkerBox.more", j - i).formatted(Formatting.ITALIC));
         }
     }
-
+*/
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return SHAPE;

@@ -1,5 +1,6 @@
 package net.midget807.cozycamps.item.component;
 
+import com.google.common.collect.Iterables;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.midget807.cozycamps.item.SackItem;
@@ -104,6 +105,10 @@ public class SackInventoryComponent {
         }
 
         return list;
+    }
+
+    public Iterable<ItemStack> iterateNonEmpty() {
+        return Iterables.filter(this.inventory, stack -> !stack.isEmpty());
     }
 
     public record Slot(int index, ItemStack item) {

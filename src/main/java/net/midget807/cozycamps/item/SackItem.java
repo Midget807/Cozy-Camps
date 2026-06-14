@@ -8,7 +8,9 @@ import net.midget807.cozycamps.screen.SackScreenHandler;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -113,6 +115,27 @@ public class SackItem extends BlockItem {
             }
         }
     }
+    private BlockState placeFromNbt(BlockPos pos, World world, ItemStack stack, BlockState state) {
+        BlockStateComponent blockStateComponent = stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT);
+        if (blockStateComponent.isEmpty()) {
+            return state;
+        } else {
+            BlockState blockState = blockStateComponent.applyToState(state);
+            if (blockState != state) {
+                world.setBlockState(pos, blockState, Block.NOTIFY_LISTENERS);
+            }
+
+            return blockState;
+        }
+    }
+    private static void copyComponentsToBlockEntity(World world, BlockPos pos, ItemStack stack) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity != null) {
+            blockEntity.readComponents(stack);
+            blockEntity.markDirty();
+        }
+    }
+
 
     @Override
     public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
@@ -179,7 +202,7 @@ public class SackItem extends BlockItem {
         int i = 0;
         int j = 0;
 
-        for (ItemStack itemStack : stack.getOrDefault(DataComponentTypes.CONTAINER, ContainerComponent.DEFAULT).iterateNonEmpty()) {
+        for (ItemStack itemStack : stack.getOrDefault(ModDataComponents.SACK_INVENTORY, SackInventoryComponent.DEFAULT).iterateNonEmpty()) {
             j++;
             if (i <= 4) {
                 i++;

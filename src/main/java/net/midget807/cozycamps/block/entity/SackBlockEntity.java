@@ -1,11 +1,14 @@
 package net.midget807.cozycamps.block.entity;
 
 import net.midget807.cozycamps.block.SackBlock;
+import net.midget807.cozycamps.item.component.SackInventoryComponent;
 import net.midget807.cozycamps.registry.ModBlockEntities;
+import net.midget807.cozycamps.registry.ModDataComponents;
 import net.midget807.cozycamps.screen.SackScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -120,6 +123,18 @@ public class SackBlockEntity extends LootableContainerBlockEntity implements Sid
         if (!this.readLootTable(nbt) && nbt.contains("Items", NbtElement.LIST_TYPE)) {
             Inventories.readNbt(nbt, this.inventory, registries);
         }
+    }
+
+    @Override
+    protected void readComponents(ComponentsAccess components) {
+        super.readComponents(components);
+        this.setHeldStacks(components.getOrDefault(ModDataComponents.SACK_INVENTORY, SackInventoryComponent.DEFAULT).copy());
+    }
+
+    @Override
+    protected void addComponents(ComponentMap.Builder componentMapBuilder) {
+        super.addComponents(componentMapBuilder);
+        componentMapBuilder.add(ModDataComponents.SACK_INVENTORY, SackInventoryComponent.fromStacks(this.getHeldStacks()));
     }
 
     @Override
