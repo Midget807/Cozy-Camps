@@ -5,6 +5,7 @@ import net.midget807.cozycamps.block.LogBenchBlock;
 import net.midget807.cozycamps.block.SackBlock;
 import net.midget807.cozycamps.block.SittableBlock;
 import net.midget807.cozycamps.block.StakeBlock;
+import net.midget807.cozycamps.block.StakeType;
 import net.midget807.cozycamps.block.StumpBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -16,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
@@ -26,7 +28,7 @@ import java.util.Map;
 public class ModBlocks {
     public static final Map<Identifier, Block> BLOCKS_WITH_ITEM = new LinkedHashMap<>();
 
-    public static final Block STAKE = register("stake", new StakeBlock(createStumpBlockSettings()));
+    public static final Block STAKE = register("stake", new StakeBlock(createStumpBlockSettings().luminance(state -> state.get(Properties.LIT) == true ? 15 : 0)));
 
     public static final Block SACK = registerBlock("sack", new SackBlock(null, createSackBlockSettings(DyeColor.YELLOW)));
     public static final Block WHITE_SACK = registerBlock("white_sack", new SackBlock(DyeColor.WHITE, createSackBlockSettings(DyeColor.WHITE)));
