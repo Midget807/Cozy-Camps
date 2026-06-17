@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.fabricmc.fabric.mixin.lookup.BlockEntityTypeAccessor;
 import net.fabricmc.fabric.mixin.object.builder.BlockEntityTypeMixin;
 import net.midget807.cozycamps.registry.*;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,5 +37,7 @@ public class CozyCampsMain implements ModInitializer {
 		ModPackets.registerAllC2S();
 		ModPackets.registerS2CPayloads();
 		ModStats.registerModStats();
+
+		System.out.println("SKULL blocks = " + ((BlockEntityTypeAccessor) BlockEntityType.SKULL).getBlocks());
 	}
 }

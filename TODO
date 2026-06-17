@@ -1,1 +1,2 @@
 //todo add all wood types for
+//todo stake head: figure out interaction pipeline for BlockItems on StakeBlock -> BlockItem should consume/fail and StakeBlock interactions should succeed

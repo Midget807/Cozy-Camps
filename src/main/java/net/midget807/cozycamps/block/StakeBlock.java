@@ -1,6 +1,7 @@
 package net.midget807.cozycamps.block;
 
 import com.mojang.serialization.MapCodec;
+import net.midget807.cozycamps.block.entity.StackHeadBlockEntity;
 import net.midget807.cozycamps.datagen.ModItemTagProvider;
 import net.midget807.cozycamps.registry.ModProperties;
 import net.minecraft.block.Block;
@@ -107,9 +108,6 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
                         player.getMainHandStack().decrement(1);
                     }
                     return ActionResult.SUCCESS;
-                } else if (state.get(PART) == StakeType.Part.POINT && player.getMainHandStack().isIn(ItemTags.SKULLS)) {
-                    world.setBlockState(pos, state.with(LIT, false).with(PART, StakeType.Part.HEAD));
-                    return ActionResult.SUCCESS;
                 }
             } else if (state.get(PART) == StakeType.Part.COAL) {
                 if (player.getMainHandStack().isIn(ItemTags.SHOVELS)) {
@@ -131,6 +129,11 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
                     world.removeBlockEntity(pos);
                     return ActionResult.SUCCESS;
                 }
+            }
+        } else {
+            if (!world.isClient && state.get(PART) == StakeType.Part.POINT && player.getMainHandStack().isIn(ItemTags.SKULLS)) {
+                world.setBlockState(pos, state.with(LIT, false).with(PART, StakeType.Part.HEAD));
+                return ActionResult.SUCCESS;
             }
         }
         return super.onUse(state, world, pos, player, hit);
@@ -223,6 +226,6 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return state.get(PART) == StakeType.Part.HEAD ? new SkullBlockEntity(pos, state) : null;
+        return state.get(PART) == StakeType.Part.HEAD ? new StackHeadBlockEntity(pos, state) : null;
     }
 }
