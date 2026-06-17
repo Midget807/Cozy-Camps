@@ -2,6 +2,9 @@ package net.midget807.cozycamps;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityType;
+import net.fabricmc.fabric.mixin.lookup.BlockEntityTypeAccessor;
+import net.fabricmc.fabric.mixin.object.builder.BlockEntityTypeMixin;
 import net.midget807.cozycamps.registry.*;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;

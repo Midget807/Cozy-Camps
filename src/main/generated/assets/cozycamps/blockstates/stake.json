@@ -6,6 +6,9 @@
     "lit=false,part=coal": {
       "model": "cozycamps:block/stake_torch"
     },
+    "lit=false,part=head": {
+      "model": "cozycamps:block/stake_head"
+    },
     "lit=false,part=point": {
       "model": "cozycamps:block/pointed_stake"
     },
@@ -17,6 +20,9 @@
     },
     "lit=true,part=coal": {
       "model": "cozycamps:block/stake_torch_lit"
+    },
+    "lit=true,part=head": {
+      "model": "cozycamps:block/stake_head"
     },
     "lit=true,part=point": {
       "model": "cozycamps:block/pointed_stake"

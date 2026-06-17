@@ -7,6 +7,7 @@ public class StakeType {
         BASE("base"),
         TOP("top"),
         POINT("point"),
+        HEAD("head"),
         COAL("coal");
 
         private final String name;

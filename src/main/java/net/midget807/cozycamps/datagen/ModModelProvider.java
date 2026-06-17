@@ -75,10 +75,12 @@ public class ModModelProvider extends FabricModelProvider {
                                 .register(StakeType.Part.POINT, false, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/pointed_stake")))
                                 .register(StakeType.Part.COAL, false, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake_torch")))
                                 .register(StakeType.Part.BASE, false, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake")))
+                                .register(StakeType.Part.HEAD, false, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake_head")))
                                 .register(StakeType.Part.TOP, true, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake")))
                                 .register(StakeType.Part.POINT, true, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/pointed_stake")))
                                 .register(StakeType.Part.COAL, true, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake_torch_lit")))
                                 .register(StakeType.Part.BASE, true, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake")))
+                                .register(StakeType.Part.HEAD, true, BlockStateVariant.create().put(VariantSettings.MODEL, CozyCampsMain.id("block/stake_head")))
                         )
         );
     }
