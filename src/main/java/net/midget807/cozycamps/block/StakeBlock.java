@@ -1,15 +1,9 @@
 package net.midget807.cozycamps.block;
 
 import com.mojang.serialization.MapCodec;
-import net.midget807.cozycamps.block.entity.StackHeadBlockEntity;
 import net.midget807.cozycamps.datagen.ModItemTagProvider;
 import net.midget807.cozycamps.registry.ModProperties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.Waterloggable;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.entity.EquipmentSlot;
@@ -27,6 +21,7 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -34,6 +29,7 @@ import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.RotationPropertyHelper;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -46,6 +42,7 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
     public static final EnumProperty<StakeType.Part> PART = ModProperties.STAKE_PART;
     public static final BooleanProperty LIT = Properties.LIT;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+    public static final IntProperty ROTATION = Properties.ROTATION;
     public static final VoxelShape BASE = Block.createCuboidShape(7, 0, 7, 9, 16, 9);
     public static final VoxelShape TOP = Block.createCuboidShape(7, 0, 7, 9, 8, 9);
     public static final VoxelShape POINT = VoxelShapes.union(
@@ -60,7 +57,7 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
 
     public StakeBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(LIT, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(LIT, false).with(ROTATION, 0));
     }
 
     @Override
@@ -92,7 +89,7 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
-        builder.add(WATERLOGGED, LIT, PART);
+        builder.add(WATERLOGGED, LIT, PART, ROTATION);
     }
 
     @Override
@@ -132,7 +129,7 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
             }
         } else {
             if (!world.isClient && state.get(PART) == StakeType.Part.POINT && player.getMainHandStack().isIn(ItemTags.SKULLS)) {
-                world.setBlockState(pos, state.with(LIT, false).with(PART, StakeType.Part.HEAD));
+                world.setBlockState(pos, state.with(LIT, false).with(PART, StakeType.Part.HEAD).with(ROTATION, RotationPropertyHelper.fromYaw(player.getYaw())));
                 return ActionResult.SUCCESS;
             }
         }
@@ -226,6 +223,6 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return state.get(PART) == StakeType.Part.HEAD ? new StackHeadBlockEntity(pos, state) : null;
+        return state.get(PART) == StakeType.Part.HEAD ? new SkullBlockEntity(pos, state) : null;
     }
 }

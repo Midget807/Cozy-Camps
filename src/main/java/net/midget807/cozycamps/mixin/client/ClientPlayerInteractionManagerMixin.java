@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ClientPlayerInteractionManager.class)
-public class ClientPlayerInteractionManagerMixin {
+public abstract class ClientPlayerInteractionManagerMixin {
     @WrapOperation(method = "interactBlockInternal", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldCancelInteraction()Z"))
     private boolean cozyCamps$allowSneakBlockInteraction(ClientPlayerEntity instance, Operation<Boolean> original, @Local(argsOnly = true)BlockHitResult hitResult) {
         if (instance.getWorld().getBlockState(hitResult.getBlockPos()).isIn(ModBlockTagProvider.SNEAK_INTERACTABLE)) {
