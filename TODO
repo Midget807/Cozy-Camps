@@ -1,2 +1,2 @@
 //todo add all wood types for
-//todo stake head: add support for StakeBlock to store enum: SkullType and mixin SkullBlockEntityRenderer to get skullType from StakeBlock
+//todo try and add profile support for stakes

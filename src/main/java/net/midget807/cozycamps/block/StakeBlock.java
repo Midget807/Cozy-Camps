@@ -1,11 +1,14 @@
 package net.midget807.cozycamps.block;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.MapCodec;
 import net.midget807.cozycamps.datagen.ModItemTagProvider;
 import net.midget807.cozycamps.registry.ModProperties;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SkullBlockEntity;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
@@ -13,6 +16,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -35,7 +40,10 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public class StakeBlock extends BlockWithEntity implements Waterloggable {
     public static final MapCodec<StakeBlock> CODEC = createCodec(StakeBlock::new);
@@ -43,6 +51,7 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
     public static final BooleanProperty LIT = Properties.LIT;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final IntProperty ROTATION = Properties.ROTATION;
+    public static final EnumProperty<SkullBlock.Type> SKULL_TYPE = ModProperties.SKULL_TYPE;
     public static final VoxelShape BASE = Block.createCuboidShape(7, 0, 7, 9, 16, 9);
     public static final VoxelShape TOP = Block.createCuboidShape(7, 0, 7, 9, 8, 9);
     public static final VoxelShape POINT = VoxelShapes.union(
@@ -54,10 +63,12 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
             Block.createCuboidShape(6.5, 3, 6.5, 9.5, 8, 9.5)
     );
     public static final VoxelShape HEAD = Block.createCuboidShape(4, 0, 4, 12, 8, 12);
+    private String profileName;
+    private UUID profileUUID;
 
     public StakeBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(LIT, false).with(ROTATION, 0));
+        this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(LIT, false).with(ROTATION, 0).with(SKULL_TYPE, SkullBlock.Type.SKELETON));
     }
 
     @Override
@@ -89,21 +100,25 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
-        builder.add(WATERLOGGED, LIT, PART, ROTATION);
+        builder.add(WATERLOGGED, LIT, PART, ROTATION, SKULL_TYPE);
     }
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (state.get(PART) == StakeType.Part.HEAD && player.isSneaking()) {
+            if (player.getMainHandStack().isIn(ItemTags.SHOVELS)) {
+                world.setBlockState(pos, state.with(LIT, false).with(PART, StakeType.Part.POINT));
+                world.removeBlockEntity(pos);
+                if (!player.isCreative()) {
+                    player.giveItemStack(new ItemStack(this.getSkullItem(state)));
+                }
+                return ActionResult.SUCCESS;
+            }
+        }
         if (!world.isClient && player.isSneaking()) {
             if (state.get(PART) == StakeType.Part.TOP || state.get(PART) == StakeType.Part.POINT) {
                 if (player.getMainHandStack().isIn(ModItemTagProvider.STUMP_SHAPER)) {
                     world.setBlockState(pos, state.with(LIT, false).with(PART, state.get(PART) == StakeType.Part.TOP ? StakeType.Part.POINT : StakeType.Part.TOP));
-                    return ActionResult.SUCCESS;
-                } else if (player.getMainHandStack().isIn(ItemTags.COALS)) {
-                    world.setBlockState(pos, state.with(LIT, false).with(PART, StakeType.Part.COAL));
-                    if (!player.isCreative()) {
-                        player.getMainHandStack().decrement(1);
-                    }
                     return ActionResult.SUCCESS;
                 }
             } else if (state.get(PART) == StakeType.Part.COAL) {
@@ -116,24 +131,64 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
                         }
                     } else {
                         world.setBlockState(pos, state.with(PART, StakeType.Part.TOP).with(LIT, false));
-                        player.giveItemStack(new ItemStack(Items.COAL));
+                        if (!player.isCreative()) {
+                            player.giveItemStack(new ItemStack(Items.COAL));
+                        }
                     }
-                    return ActionResult.SUCCESS;
-                }
-            } else if (state.get(PART) == StakeType.Part.HEAD) {
-                if (player.getMainHandStack().isIn(ItemTags.SHOVELS)) {
-                    world.setBlockState(pos, state.with(LIT, false).with(PART, StakeType.Part.POINT));
-                    world.removeBlockEntity(pos);
                     return ActionResult.SUCCESS;
                 }
             }
         } else {
             if (!world.isClient && state.get(PART) == StakeType.Part.POINT && player.getMainHandStack().isIn(ItemTags.SKULLS)) {
-                world.setBlockState(pos, state.with(LIT, false).with(PART, StakeType.Part.HEAD).with(ROTATION, RotationPropertyHelper.fromYaw(player.getYaw())));
+                world.setBlockState(pos, state
+                        .with(LIT, false)
+                        .with(PART, StakeType.Part.HEAD)
+                        .with(ROTATION, RotationPropertyHelper.fromYaw(player.getYaw()))
+                        .with(SKULL_TYPE, this.getSkullTypeFromStack(player.getMainHandStack()))
+                );
+                player.getMainHandStack().decrementUnlessCreative(1, player);
+                return ActionResult.SUCCESS;
+            } else if (!world.isClient && (state.get(PART) == StakeType.Part.TOP && state.get(PART) == StakeType.Part.POINT) && player.getMainHandStack().isIn(ItemTags.COALS)) {
+                world.setBlockState(pos, state.with(LIT, false).with(PART, StakeType.Part.COAL));
+                if (!player.isCreative()) {
+                    player.getMainHandStack().decrement(1);
+                }
                 return ActionResult.SUCCESS;
             }
         }
         return super.onUse(state, world, pos, player, hit);
+    }
+
+    private SkullBlock.Type getSkullTypeFromStack(ItemStack mainHandStack) {
+        if (mainHandStack.isOf(Items.SKELETON_SKULL)) {
+            return SkullBlock.Type.SKELETON;
+        } else if (mainHandStack.isOf(Items.WITHER_SKELETON_SKULL)) {
+            return SkullBlock.Type.WITHER_SKELETON;
+        } else if (mainHandStack.isOf(Items.PLAYER_HEAD)) {
+            return SkullBlock.Type.PLAYER;
+        } else if (mainHandStack.isOf(Items.ZOMBIE_HEAD)) {
+            return SkullBlock.Type.ZOMBIE;
+        } else if (mainHandStack.isOf(Items.CREEPER_HEAD)) {
+            return SkullBlock.Type.CREEPER;
+        } else if (mainHandStack.isOf(Items.PIGLIN_HEAD)) {
+            return SkullBlock.Type.PIGLIN;
+        } else if (mainHandStack.isOf(Items.DRAGON_HEAD)) {
+            return SkullBlock.Type.DRAGON;
+        } else {
+            return SkullBlock.Type.SKELETON;
+        }
+    }
+
+    private Item getSkullItem(BlockState state) {
+        return switch (state.get(SKULL_TYPE)) {
+            case SKELETON -> Items.SKELETON_SKULL;
+            case WITHER_SKELETON -> Items.WITHER_SKELETON_SKULL;
+            case PLAYER -> Items.PLAYER_HEAD;
+            case ZOMBIE -> Items.ZOMBIE_HEAD;
+            case CREEPER -> Items.CREEPER_HEAD;
+            case PIGLIN -> Items.PIGLIN_HEAD;
+            case DRAGON -> Items.DRAGON_HEAD;
+        };
     }
 
     @Override
@@ -223,6 +278,10 @@ public class StakeBlock extends BlockWithEntity implements Waterloggable {
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return state.get(PART) == StakeType.Part.HEAD ? new SkullBlockEntity(pos, state) : null;
+        if (state.get(PART) == StakeType.Part.HEAD) {
+            SkullBlockEntity skullBlockEntity = new SkullBlockEntity(pos, state);
+            return skullBlockEntity;
+        }
+        return null;
     }
 }

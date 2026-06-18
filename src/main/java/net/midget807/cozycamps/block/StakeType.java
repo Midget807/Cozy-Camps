@@ -1,5 +1,6 @@
 package net.midget807.cozycamps.block;
 
+import net.minecraft.block.SkullBlock;
 import net.minecraft.util.StringIdentifiable;
 
 public class StakeType {
@@ -24,6 +25,28 @@ public class StakeType {
         @Override
         public String asString() {
             return name;
+        }
+    }
+    public static enum SkullType implements SkullBlock.SkullType {
+        RANDOM("random"),
+        SKELETON("skeleton"),
+        WITHER_SKELETON("wither_skeleton"),
+        PLAYER("player"),
+        ZOMBIE("zombie"),
+        CREEPER("creeper"),
+        PIGLIN("piglin"),
+        DRAGON("dragon");
+
+        public final String name;
+
+        private SkullType(final String name) {
+            this.name = name;
+            TYPES.put(name, this);
+        }
+
+        @Override
+        public String asString() {
+            return this.name;
         }
     }
 }
