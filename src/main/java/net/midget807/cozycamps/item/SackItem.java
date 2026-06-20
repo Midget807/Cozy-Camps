@@ -61,7 +61,7 @@ public class SackItem extends BlockItem {
                     (syncId, playerInventory, player) -> new SackScreenHandler(
                             syncId, playerInventory, Inventory.fromItem(stack)
                     ),
-                    Text.literal("")
+                    Text.translatable("container.cozycamps.sack")
             ));
         }
         return TypedActionResult.success(stack);

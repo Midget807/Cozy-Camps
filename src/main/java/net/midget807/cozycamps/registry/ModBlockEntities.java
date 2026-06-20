@@ -14,7 +14,26 @@ import java.util.Set;
 @SuppressWarnings("UnstableApiUsage")
 public class ModBlockEntities {
     public static final BlockEntityType<SackBlockEntity> SACK = register("sack",
-            BlockEntityType.Builder.<SackBlockEntity>create(SackBlockEntity::new, ModBlocks.SACK)
+            BlockEntityType.Builder.<SackBlockEntity>create(
+                    SackBlockEntity::new,
+                    ModBlocks.SACK,
+                    ModBlocks.WHITE_SACK,
+                    ModBlocks.LIGHT_GRAY_SACK,
+                    ModBlocks.GRAY_SACK,
+                    ModBlocks.BLACK_SACK,
+                    ModBlocks.BROWN_SACK,
+                    ModBlocks.RED_SACK,
+                    ModBlocks.ORANGE_SACK,
+                    ModBlocks.YELLOW_SACK,
+                    ModBlocks.LIME_SACK,
+                    ModBlocks.GREEN_SACK,
+                    ModBlocks.CYAN_SACK,
+                    ModBlocks.LIGHT_BLUE_SACK,
+                    ModBlocks.BLUE_SACK,
+                    ModBlocks.PURPLE_SACK,
+                    ModBlocks.MAGENTA_SACK,
+                    ModBlocks.PINK_SACK
+            )
     );
 
     private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType.Builder<T> builder) {
